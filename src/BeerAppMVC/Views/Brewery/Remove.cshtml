@@ -1,0 +1,16 @@
+﻿@using BeerAppAPI.Models;
+@model Brewery
+@{
+    ViewData["Title"] = "Delete Brewery";
+}
+
+<div class="container">
+    <fieldset>
+        <legend>Are you sure?</legend>
+        <dl>
+            <dt>Name</dt>
+            <dd>@Model.Name</dd>
+        </dl>
+        <a asp-action="DeleteConfirm" asp-route-id="@Model.Id" class="btn btn-default">Delete</a>
+    </fieldset>
+</div>
