@@ -14,6 +14,27 @@ namespace BeerAppMVC.Controllers
     [Authorize]
     public class BeerController : BaseController
     {
+
+        public async Task<IActionResult> Index()
+        {
+            List<Beer> items = new List<Beer>();
+
+            try
+            {
+                string token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
+                string response = await GetClientResponseAsync("/api/beer", token);
+
+                var responseItems = JsonConvert.DeserializeObject<List<Beer>>(response);
+                items.AddRange(responseItems);
+
+                return View(items);
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
         public async Task<IActionResult> Add(string name, double abv, int breweryId)
         {
             try
@@ -28,7 +49,7 @@ namespace BeerAppMVC.Controllers
                 var token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
                 var response = await PostClientReponseAsync("/api/Beer", token, JsonConvert.SerializeObject(beer));
 
-                return RedirectToAction("Detail", "Brewery", new { id = breweryId});
+                return RedirectToAction("Detail", "Brewery", new { id = breweryId });
             }
             catch (Exception)
             {
@@ -64,7 +85,7 @@ namespace BeerAppMVC.Controllers
                 var item = JsonConvert.DeserializeObject<Beer>(response);
 
                 var deleteResponse = await DeleteClientResponseAsync($"/api/Beer/{id}", token);
-                
+
                 return RedirectToAction("Detail", "Brewery", new { id = item.BreweryId });
             }
             catch (Exception)

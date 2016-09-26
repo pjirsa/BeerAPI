@@ -1,6 +1,7 @@
 ﻿using BeerAppAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace BeerAppAPI.Controllers
         [HttpGet]
         public IEnumerable<Beer> Get()
         {
-            return _context.Beer;
+            return _context.Beer.Include(b=>b.Brewery).OrderBy(b=>b.Name);
         }
 
         [HttpGet("{id}")]

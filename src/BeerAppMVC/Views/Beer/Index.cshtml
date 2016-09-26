@@ -1,0 +1,30 @@
+﻿@using BeerAppAPI.Models
+@model IList<Beer>
+@{
+    ViewData["Title"] = "Beer List";
+}
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>ABV</th>
+                    <th>Brewery</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><a asp-action="Remove" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        <td><a asp-action="Detail" asp-route-id="@item.Id">@item.Name</a></td>
+                        <td>@item.ABV</td>
+                        <td><a asp-controller="Brewery" asp-action="Detail" asp-route-id="@item.Brewery.Id">@item.Brewery.Name</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
