@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using BeerAppMVC.Utils;
+using System.Reflection;
 
 namespace BeerAppMVC
 {
@@ -21,6 +22,7 @@ namespace BeerAppMVC
         public static string GraphResourceId;
         public static string BeerAPIResourceId;
         public static string BeerAPIBaseUri;
+        public static string APIMSubscriptionId;
 
         public Startup(IHostingEnvironment env)
         {
@@ -32,7 +34,7 @@ namespace BeerAppMVC
 
             if (env.IsDevelopment())
             {
-                builder.AddUserSecrets();
+                builder.AddUserSecrets<Startup>();
             }
 
             Configuration = builder.Build();
@@ -77,6 +79,7 @@ namespace BeerAppMVC
             GraphResourceId = Configuration["AzureAd:GraphResourceId"];
             BeerAPIResourceId = Configuration["AzureAd:BeerAPIResourceId"];
             BeerAPIBaseUri = Configuration["AzureAd:BeerAPIBaseUri"];
+            APIMSubscriptionId = Configuration["AzureAd:APIMSubscriptionId"];
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
 
@@ -114,6 +117,7 @@ namespace BeerAppMVC
 
             // Notify the OIDC middleware that we already took care of code redemption.
             context.HandleCodeRedemption();
+            context.HandleResponse();
         }
 
         // Handle sign-in errors differently than generic errors.

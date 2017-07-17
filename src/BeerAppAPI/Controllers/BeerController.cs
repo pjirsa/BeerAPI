@@ -46,7 +46,7 @@ namespace BeerAppAPI.Controllers
 
         [Authorize]
         [HttpPut]
-        public IActionResult Put(int id, Beer beer)
+        public IActionResult Put(int id, [FromBody]Beer beer)
         {
             var item = _context.Beer.FirstOrDefault(b => b.Id == id);
             if (item == null) return NotFound();

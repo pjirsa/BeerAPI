@@ -25,7 +25,7 @@ namespace BeerAppMVC.Controllers
             try
             {
                 string token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                string response = await GetClientResponseAsync("/api/brewery", token);
+                string response = await GetClientResponseAsync("/mnbeer/brewery", token, Startup.APIMSubscriptionId);
 
                 var responseItems = JsonConvert.DeserializeObject<List<Brewery>>(response);
                 items.AddRange(responseItems);
@@ -43,7 +43,7 @@ namespace BeerAppMVC.Controllers
             try
             {
                 string token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                string response = await GetClientResponseAsync($"/api/brewery/{id}", token);
+                string response = await GetClientResponseAsync($"/mnbeer/brewery/{id}", token, Startup.APIMSubscriptionId);
 
                 var responseItem = JsonConvert.DeserializeObject<Brewery>(response);
 
@@ -67,7 +67,7 @@ namespace BeerAppMVC.Controllers
                 };
 
                 string token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                string response = await PostClientReponseAsync("/api/Brewery", token, JsonConvert.SerializeObject(brewery));
+                string response = await PostClientReponseAsync("/mnbeer/Brewery", token, JsonConvert.SerializeObject(brewery), Startup.APIMSubscriptionId);
 
                 return RedirectToAction("Index");
             }
@@ -82,7 +82,7 @@ namespace BeerAppMVC.Controllers
             try
             {
                 string token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                string response = await GetClientResponseAsync($"/api/Brewery/{id}", token);
+                string response = await GetClientResponseAsync($"/mnbeer/Brewery/{id}", token, Startup.APIMSubscriptionId);
 
                 var item = JsonConvert.DeserializeObject<Brewery>(response);
 
@@ -99,7 +99,7 @@ namespace BeerAppMVC.Controllers
             try
             {
                 string token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                string response = await DeleteClientResponseAsync($"/api/Brewery?id={id}", token);
+                string response = await DeleteClientResponseAsync($"/mnbeer/Brewery?id={id}", token, Startup.APIMSubscriptionId);
 
                 return RedirectToAction("Index");
             }

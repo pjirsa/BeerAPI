@@ -1,18 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7C9E5EC8-915F-429D-9891-4B8EAE6D96CF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CE5A6D51-29FC-4EB8-A5C3-749A644652E9}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BeerAppAPI", "src\BeerAppAPI\BeerAppAPI.xproj", "{EEB101F0-72AA-4FF6-A4E0-065BCBC58A41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeerAppAPI", "src\BeerAppAPI\BeerAppAPI.csproj", "{EEB101F0-72AA-4FF6-A4E0-065BCBC58A41}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BeerAppMVC", "src\BeerAppMVC\BeerAppMVC.xproj", "{238D26E8-4EF3-406B-8A53-B59AB081A87A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeerAppMVC", "src\BeerAppMVC\BeerAppMVC.csproj", "{238D26E8-4EF3-406B-8A53-B59AB081A87A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,13 +10,12 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using BeerAppAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Swashbuckle.SwaggerUi;
-using Swashbuckle.SwaggerGen;
-using Swashbuckle.SwaggerGen.Generator;
-using Swashbuckle.Swagger.Model;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace BeerAppAPI
 {
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -29,7 +28,7 @@ namespace BeerAppAPI
 
             if (env.IsDevelopment())
             {
-                builder.AddUserSecrets();
+                builder.AddUserSecrets<Startup>();
             }
 
             Configuration = builder.Build();
@@ -44,7 +43,7 @@ namespace BeerAppAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SingleApiVersion(new Info
+                c.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
                     Title = "BeerAPI",
@@ -90,8 +89,14 @@ namespace BeerAppAPI
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseSwagger();
-            app.UseSwaggerUi();
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value);
+            });
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MN Beer API");
+            });
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
@@ -99,6 +104,10 @@ namespace BeerAppAPI
                 AutomaticChallenge = true,
                 Authority = String.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAD:Tenant"]),
                 Audience = Configuration["AzureAd:Audience"],
+                TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidAudiences = new[] { Configuration["AzureAd:APIMResource"] }
+                }
             });
 
             app.UseMvc(routes =>

@@ -22,7 +22,7 @@ namespace BeerAppMVC.Controllers
             try
             {
                 string token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                string response = await GetClientResponseAsync("/api/beer", token);
+                string response = await GetClientResponseAsync("/mnbeer/beer", token, Startup.APIMSubscriptionId);
 
                 var responseItems = JsonConvert.DeserializeObject<List<Beer>>(response);
                 items.AddRange(responseItems);
@@ -47,7 +47,7 @@ namespace BeerAppMVC.Controllers
                 };
 
                 var token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                var response = await PostClientReponseAsync("/api/Beer", token, JsonConvert.SerializeObject(beer));
+                var response = await PostClientReponseAsync("/mnbeer/beer", token, JsonConvert.SerializeObject(beer), Startup.APIMSubscriptionId);
 
                 return RedirectToAction("Detail", "Brewery", new { id = breweryId });
             }
@@ -63,7 +63,7 @@ namespace BeerAppMVC.Controllers
             try
             {
                 var token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                var response = await GetClientResponseAsync($"/api/Beer/{id}", token);
+                var response = await GetClientResponseAsync($"/mnbeer/Beer/{id}", token, Startup.APIMSubscriptionId);
 
                 var item = JsonConvert.DeserializeObject<Beer>(response);
 
@@ -80,11 +80,11 @@ namespace BeerAppMVC.Controllers
             try
             {
                 var token = await HttpContext.GetAuthTokenAsync(Startup.BeerAPIResourceId);
-                var response = await GetClientResponseAsync($"/api/Beer/{id}", token);
+                var response = await GetClientResponseAsync($"/mnbeer/Beer/{id}", token, Startup.APIMSubscriptionId);
 
                 var item = JsonConvert.DeserializeObject<Beer>(response);
 
-                var deleteResponse = await DeleteClientResponseAsync($"/api/Beer/{id}", token);
+                var deleteResponse = await DeleteClientResponseAsync($"/mnbeer/Beer/{id}", token, Startup.APIMSubscriptionId);
 
                 return RedirectToAction("Detail", "Brewery", new { id = item.BreweryId });
             }

@@ -47,7 +47,7 @@ namespace BeerAppAPI.Controllers
 
         [Authorize]
         [HttpPut]
-        public IActionResult Put(int id, Brewery model)
+        public IActionResult Put(int id, [FromBody]Brewery model)
         {
             var item = _context.Brewery.FirstOrDefault(x => x.Id == id);
 

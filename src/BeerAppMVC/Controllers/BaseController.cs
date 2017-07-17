@@ -11,12 +11,13 @@ namespace BeerAppMVC.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected async Task<string> GetClientResponseAsync(string endpoint, string token)
+        protected async Task<string> GetClientResponseAsync(string endpoint, string token, string subscriptionId = "")
         {
 
             using (HttpClient client = new HttpClient() { BaseAddress = new Uri(Startup.BeerAPIBaseUri) })
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionId);
                 HttpResponseMessage response = await client.GetAsync(endpoint);
 
                 if (response.IsSuccessStatusCode)
@@ -31,11 +32,12 @@ namespace BeerAppMVC.Controllers
             }
         }
 
-        protected async Task<string> PostClientReponseAsync(string endpoint, string token, string content)
+        protected async Task<string> PostClientReponseAsync(string endpoint, string token, string content, string subscriptionId = "")
         {
             using (HttpClient client = new HttpClient() { BaseAddress = new Uri(Startup.BeerAPIBaseUri) })
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionId);
                 var postbody = new StringContent(content, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = await client.PostAsync(endpoint, postbody);
@@ -51,12 +53,34 @@ namespace BeerAppMVC.Controllers
             }
         }
 
-        protected async Task<string> DeleteClientResponseAsync(string endpoint, string token)
+        protected async Task<string> PutClientResponseAsync(string endpoint, string token, string content, string subscriptionId = "")
+        {
+            using (HttpClient client = new HttpClient() { BaseAddress = new Uri(Startup.BeerAPIBaseUri) })
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionId);
+                var postbody = new StringContent(content, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PutAsync(endpoint, postbody);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    throw new Exception("Client call failed.", new Exception(response.ReasonPhrase));
+                }
+            }
+        }
+
+        protected async Task<string> DeleteClientResponseAsync(string endpoint, string token, string subscriptionId = "")
         {
 
             using (HttpClient client = new HttpClient() { BaseAddress = new Uri(Startup.BeerAPIBaseUri) })
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionId);
                 HttpResponseMessage response = await client.DeleteAsync(endpoint);
 
                 if (response.IsSuccessStatusCode)
